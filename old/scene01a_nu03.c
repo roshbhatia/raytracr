@@ -8,12 +8,6 @@ double sgn(double v)
   return 0.0 ;
 }
 
-
-
-
-
-
-
 // circle :   x^2 + y^2 = 1
 int f1 (double u, double xy[2])
 {
@@ -78,11 +72,14 @@ int f7 (double u, double xy[2])
   xy[1] = sin(u) ;
 }
 
+//sphere : x^2 + y^2 + z^2 =0
+//u = longitude && v = latitiude
+int sphere(double u, double v, double xyz[3]){
+  xyz[0] = u;
+  xyz[1] = u * cos(v);
+  xyz[1] = y * sin(v);
 
-
- 
-
-
+}
 
 int plot (double ulo, double uhi,
           int (*func)(double u, double xy[2]),
@@ -98,6 +95,20 @@ int plot (double ulo, double uhi,
     D3d_mat_mult_pt(p,mat,p) ;
     G_point(p[0],p[1]) ;
   }
+}
+
+int plot_3d(double ulo, double uhi, int(*func)(double u , double xyz[3], double mat [4][4]){
+    double ybarbar, xbarbar;
+    double HALF_ANGLE = M_PI/4;
+
+    for (u = ulo; u<= uhi; u+= 0.01){
+      ybarbar = (400/(tan(HALF_ANGLE)))*;
+
+
+      
+      D3d_mat_mult_pt(p,mat,p);
+      G_point(p[0],p[1]);
+    }					 
 }
 
 // n = (b-a) x (c-a)
