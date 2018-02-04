@@ -1,0 +1,92 @@
+
+
+
+  //////////////////////////////////////////////
+  circle 
+  x^2 + y^2 = 1
+  x = cos(u), y = sin(u)
+
+  u in  [0.25*M_PI, 1.50*M_PI]
+   SX    50.0  
+   SY   100.0  
+   TX   300.0  
+   TY   500.0  
+
+  //////////////////////////////////////////////
+  sum4 
+  x^4 + y^4 = 1
+  x = sqrt(|cos(u)|), y = sqrt(|sin(u)|) 
+  (for points in first quadrant, you figure out other quadrants)
+
+  u in  [0.50*M_PI, 1.75*M_PI]
+   SX    30.0  
+   SY    60.0  
+   TX   300.0  
+   TY   300.0  
+
+  //////////////////////////////////////////////
+  square
+  |x| + |y| = 1
+  x = [cos(u)]^2, y = [sin(u)]^2
+  (for points in first quadrant, you figure out other quadrants)
+
+
+  u in  [0, 2.0*M_PI]
+   SX   150.0  
+   SY   100.0  
+   TX   500.0  
+   TY   500.0  
+
+  //////////////////////////////////////////////
+  astroid 
+  sqrt(|x|) + sqrt(|y|) = 1  
+  x = [cos(u)]^4, y = [sin(u)]^4
+  (for points in first quadrant, you figure out other quadrants)
+
+
+  u in  [0, 2.0*M_PI]
+   SX    80.0  
+   SY    40.0  
+   RZ    45.0  
+   TX   500.0  
+   TY   300.0  
+
+  //////////////////////////////////////////////
+  hyperbola  {right branch}
+  x^2 - y^2 = 1 {right branch}
+  x = cosh(u), y = sinh(u)
+
+  u in  [-1,2]
+   NY     0.0   // value immaterial here
+   SX   100.0  
+   SY   100.0  
+   RZ     0.0  
+   TX   250.0  
+   TY   250.0  
+
+  //////////////////////////////////////////////
+  parabola
+  y = x^2
+  x = u, y = u^2
+
+  u in  [-1,2]
+   SX   150.0  
+   SY    50.0  
+   RZ    60.0  
+   TX   250.0  
+   TY   250.0  
+ 
+  //////////////////////////////////////////////
+  lemon
+  x^2 - (1-y^2)^3 = 0
+  x = [cos(u)]^3, y = sin(u)
+
+  u in  [0, 2.0*M_PI]
+   SX   150.0  
+   SY   150.0  
+   RZ    60.0  
+   TX   600.0  
+   TY   150.0  
+
+
+
