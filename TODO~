@@ -1,0 +1,10 @@
+TODO:
+	- Fix sphere rendering
+	- Implement Z-Buffer Algorithm
+	- Implement Lightmodel	
+		- ambient = constant
+		- diffuse = constant * cos(alpha)
+		- specular = constant * (cos(beta)^power)
+		- cos(alpha) = Nu * Lu
+		- cos(beta) = Eu * Ru
+	

@@ -74,11 +74,10 @@ int f7 (double u, double xy[2])
 
 //sphere : x^2 + y^2 + z^2 =0
 //u = longitude && v = latitiude
-int sphere(double u, double v, double xyz[3]){
-  xyz[0] = u;
-  xyz[1] = u * cos(v);
-  xyz[1] = y * sin(v);
-
+int f8(double u, double v, double xyz[3]){
+  xyz[0] = cos(u) * cos(v);
+  xyz[1] = sin(v);
+  xyz[1] = cos(v) * sin(u);
 }
 
 int plot (double ulo, double uhi,
@@ -97,17 +96,19 @@ int plot (double ulo, double uhi,
   }
 }
 
-int plot_3d(double ulo, double uhi, int(*func)(double u , double xyz[3], double mat [4][4]){
-    double ybarbar, xbarbar;
+int plot_3d(double ulo, double uhi, int(*func)(double u , double xyz[3], double mat [4][4])){
+    double u, v;
+    double p[2];
     double HALF_ANGLE = M_PI/4;
 
     for (u = ulo; u<= uhi; u+= 0.01){
-      ybarbar = (400/(tan(HALF_ANGLE)))*;
-
-
-      
-      D3d_mat_mult_pt(p,mat,p);
-      G_point(p[0],p[1]);
+      for (v = ulo; v <= uhi; v += 0.01){
+	p[0] = ((400/tan(HALF_ANGLE)) * (xyz[0]/xyz[2]) + 400);
+	p[1] = ((400/tan(HALF_ANGLE)) * (xyz[1]/xyz[2]) + 400);
+	func(u,v,p);
+	D3d_mat_mult_pt(y,mat,y);
+	G_point(p[0],p[1]);
+      }
     }					 
 }
 
@@ -157,112 +158,6 @@ int main()
   G_clear() ;
 
 
-  
-  //---------------------------------------------------------
-  // circle
-  Tn = 0 ; // number of transformations
-  Ttypelist[Tn] = SX ; Tvlist[Tn] =   50.0 ; Tn++ ;
-  Ttypelist[Tn] = SY ; Tvlist[Tn] =  100.0 ; Tn++ ;
-  Ttypelist[Tn] = TX ; Tvlist[Tn] =  300.0 ; Tn++ ;
-  Ttypelist[Tn] = TY ; Tvlist[Tn] =  500.0 ; Tn++ ;
-  D3d_make_movement_sequence_matrix (mat,imat,
-                                     Tn,
-                                     Ttypelist,
-                                     Tvlist) ;
-
-  G_rgb(1,0,0) ;
-  plot(0.25*M_PI, 1.50*M_PI,  f1, mat) ;
-  plot_normals(0.25*M_PI, 1.50*M_PI,  f1, mat) ;
-
-  G_wait_key() ;
-
-  //---------------------------------------------------------
-  // sum4
-  Tn = 0 ; // number of transformations
-  Ttypelist[Tn] = SX ; Tvlist[Tn] =   30.0 ; Tn++ ;
-  Ttypelist[Tn] = SY ; Tvlist[Tn] =   60.0 ; Tn++ ;
-  Ttypelist[Tn] = TX ; Tvlist[Tn] =  300.0 ; Tn++ ;
-  Ttypelist[Tn] = TY ; Tvlist[Tn] =  300.0 ; Tn++ ;
-  D3d_make_movement_sequence_matrix (mat,imat,
-                                     Tn,
-                                     Ttypelist,
-                                     Tvlist) ;
-
-  G_rgb(0,1,0) ;
-  plot(0.50*M_PI, 1.75*M_PI,  f2, mat) ;
-  plot_normals(0.50*M_PI, 1.75*M_PI,  f2, mat) ;
-  G_wait_key() ;
-
-  //---------------------------------------------------------
-  // square
-  Tn = 0 ; // number of transformations
-  Ttypelist[Tn] = SX ; Tvlist[Tn] =  150.0 ; Tn++ ;
-  Ttypelist[Tn] = SY ; Tvlist[Tn] =  100.0 ; Tn++ ;
-  Ttypelist[Tn] = TX ; Tvlist[Tn] =  500.0 ; Tn++ ;
-  Ttypelist[Tn] = TY ; Tvlist[Tn] =  500.0 ; Tn++ ;
-  D3d_make_movement_sequence_matrix (mat,imat,
-                                     Tn,
-                                     Ttypelist,
-                                     Tvlist) ;
-  G_rgb(0,0,1) ;
-  plot(0.0, 2*M_PI,  f3, mat) ;
-  plot_normals(0.0, 2*M_PI,  f3, mat) ;
-  G_wait_key() ;
-
-  //---------------------------------------------------------
-  // astroid
-  Tn = 0 ; // number of transformations
-  Ttypelist[Tn] = SX ; Tvlist[Tn] =   80.0 ; Tn++ ;
-  Ttypelist[Tn] = SY ; Tvlist[Tn] =   40.0 ; Tn++ ;
-  Ttypelist[Tn] = RZ ; Tvlist[Tn] =   45.0 ; Tn++ ;
-  Ttypelist[Tn] = TX ; Tvlist[Tn] =  500.0 ; Tn++ ;
-  Ttypelist[Tn] = TY ; Tvlist[Tn] =  300.0 ; Tn++ ;
-  D3d_make_movement_sequence_matrix (mat,imat,
-                                     Tn,
-                                     Ttypelist,
-                                     Tvlist) ;
-  G_rgb(1,1,0) ;
-  plot(0.0, 2*M_PI,  f4, mat) ;
-  plot_normals(0.0, 2*M_PI,  f4, mat) ;
-  G_wait_key() ;
-
-  //---------------------------------------------------------
-  // hyperbola : right branch
-  Tn = 0 ; // number of transformations
-  Ttypelist[Tn] = NY ; Tvlist[Tn] =    0.0 ; Tn++ ;
-  Ttypelist[Tn] = SX ; Tvlist[Tn] =  100.0 ; Tn++ ;
-  Ttypelist[Tn] = SY ; Tvlist[Tn] =  100.0 ; Tn++ ;
-  Ttypelist[Tn] = RZ ; Tvlist[Tn] =    0.0 ; Tn++ ;
-  Ttypelist[Tn] = TX ; Tvlist[Tn] =  250.0 ; Tn++ ;
-  Ttypelist[Tn] = TY ; Tvlist[Tn] =  250.0 ; Tn++ ;
-  D3d_make_movement_sequence_matrix (mat,imat,
-                                     Tn,
-                                     Ttypelist,
-                                     Tvlist) ;
-  G_rgb(0,1,1) ;
-  plot(-1, 2,  f5, mat) ;
-  plot_normals(-1, 2,  f5, mat) ;
-  G_wait_key() ;
-
-  //---------------------------------------------------------
-  // parabola
-  Tn = 0 ; // number of transformations
-  Ttypelist[Tn] = SX ; Tvlist[Tn] =  150.0 ; Tn++ ;
-  Ttypelist[Tn] = SY ; Tvlist[Tn] =   50.0 ; Tn++ ;
-  Ttypelist[Tn] = RZ ; Tvlist[Tn] =   60.0 ; Tn++ ;
-  Ttypelist[Tn] = TX ; Tvlist[Tn] =  250.0 ; Tn++ ;
-  Ttypelist[Tn] = TY ; Tvlist[Tn] =  250.0 ; Tn++ ;
-  D3d_make_movement_sequence_matrix (mat,imat,
-                                     Tn,
-                                     Ttypelist,
-                                     Tvlist) ;
-  G_rgb(1,0,1) ;
-  plot(-1, 2,  f6, mat) ;
-  plot_normals(-1, 2,  f6, mat) ;
-  G_wait_key() ;
-
-  //---------------------------------------------------------
-  // lemon
   Tn = 0 ; // number of transformations
   Ttypelist[Tn] = SX ; Tvlist[Tn] =  150.0 ; Tn++ ;
   Ttypelist[Tn] = SY ; Tvlist[Tn] =  150.0 ; Tn++ ;
@@ -274,8 +169,8 @@ int main()
                                      Ttypelist,
                                      Tvlist) ;
   G_rgb(1,1,1) ;
-  plot(0, 2*M_PI,  f7, mat) ;
-  plot_normals(0, 2*M_PI,  f7, mat) ;
+  plot(0, 2*M_PI,  f8, mat) ;
+  plot_normals(0, 2*M_PI,  f8, mat) ;
   G_wait_key() ;
 
 
