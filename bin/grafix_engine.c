@@ -169,8 +169,8 @@ int main()
                                      Ttypelist,
                                      Tvlist) ;
   G_rgb(1,1,1) ;
-  plot(0, 2*M_PI,  f8, mat) ;
-  plot_normals(0, 2*M_PI,  f8, mat) ;
+  plot_3d(0, 2*M_PI,  f8, mat) ;
+  //plot_normals(0, 2*M_PI,  f8, mat) ;
   G_wait_key() ;
 
 
