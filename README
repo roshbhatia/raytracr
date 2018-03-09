@@ -1,0 +1,10 @@
+To compile:
+	For current project:
+		CD into ./bin and run "make". 
+	For old projects:
+		Copy desired folder from ./old into ../../, then CD into bin and run "make"
+To run:
+	Execute a.out! The frames will be placed in ./output/
+	View the frames by executing ./output/play when inside ./output
+Misc:
+	Remove the old frames by running "make clear" from inside ./bin
