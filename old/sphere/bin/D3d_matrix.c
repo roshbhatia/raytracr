@@ -371,9 +371,11 @@ int D3d_mat_mult_points (double *X, double *Y, double *Z,
 }
 
 
+
+
 int D3d_mat_mult_pt (double P[3],
                      double m[4][4],
-                     double Q[3]) 
+                     double Q[3])
 // multiplies a SINGLE point by a matrix
 // | P[0] |       | Q[0] |
 // | P[1] | = m * | Q[1] |
@@ -383,40 +385,63 @@ int D3d_mat_mult_pt (double P[3],
 // SAFE, user may make a call like 
 // D3d_mat_mult_pt (q,  m,q) ;
 {
-  double p0,p1,p2;
-  
-  p0 = m[0][0]*Q[0] + m[0][1]*Q[1] + m[0][2]*Q[2] + m[0][3];
-  p1 = m[1][0]*Q[0] + m[1][1]*Q[1] + m[1][2]*Q[2] + m[1][3];
-  p2 = m[2][0]*Q[0] + m[2][1]*Q[1] + m[2][2]*Q[2] + m[2][3];
+  double u,v,w ;
 
-  P[0] = p0;
-  P[1] = p1;
-  P[2] = p2;
+  u = m[0][0]*Q[0] + m[0][1]*Q[1] + m[0][2]*Q[2] + m[0][3] ;
+  v = m[1][0]*Q[0] + m[1][1]*Q[1] + m[1][2]*Q[2] + m[1][3] ;
+  w = m[2][0]*Q[0] + m[2][1]*Q[1] + m[2][2]*Q[2] + m[2][3] ;
 
-  return 1; 
+  P[0] = u ;
+  P[1] = v ;
+  P[2] = w ;
+
+  return 1 ;
+
 }
+
+
+
+
 
 int D3d_x_product (double res[3], double a[3], double b[3])
 // res = a x b  , cross product of two vectors
 // SAFE: it is ok to make a call such as
 // D3d_x_product (a,  a,b) or
 // D3d_x_product (b,  a,b) or
-// D3d_x_product (a,  a,a)
+// D3d_x_product (a,  a,a) 
 {
-  double x,y,z;
-  x = (a[1] * b[2]) - (a[2]*b[1]);
-  y = (a[2] * b[0]) - (a[0]*b[2]);
-  z = (a[0] * b[1]) - (a[1]*b[0]);
+    double r[3] ;
+    
+    r[0] = a[1]*b[2] - b[1]*a[2] ;
+    r[1] = b[0]*a[2] - a[0]*b[2] ;
+    r[2] = a[0]*b[1] - b[0]*a[1] ;
 
-  res[0] = x;
-  res[1] = y;
-  res[2] = z;
+    res[0] = r[0] ;
+    res[1] = r[1] ;
+    res[2] = r[2] ;
 
-  return 1;
+    return 1 ;
+}
+
+double D3d_dot_product(double vector1[3], double vector2[3]){
+	return ((vector1[0]*vector2[0]) + (vector1[1]*vector2[1]) + (vector1[2]*vector2[2]));
 }
 
 
-int D3d_make_movement_sequence_matrix (double mat[4][4],double inv[4][4],int num_movements,int *movement_type_list,double *parameter_list ) 
+int D3d_normalize(double *vector){
+	double den = D3d_dot_product(vector,vector);
+	vector[0] = vector[0]/sqrt(den);
+	vector[1] = vector[1]/sqrt(den);
+	vector[2] = vector[2]/sqrt(den);	
+	return 1;
+}
+
+int D3d_make_movement_sequence_matrix (
+                              double mat[4][4],
+                              double inv[4][4],
+                              int num_movements,
+                              int *movement_type_list,
+                              double *parameter_list )
 // create a matrix (mat) and its inverse (inv)
 // that specify a sequence of movements....
 // movement_type_list[k] is an integer that
@@ -443,104 +468,204 @@ int D3d_make_movement_sequence_matrix (double mat[4][4],double inv[4][4],int num
 // 10 - negate y...relfect in the xz plane
 // 11 - negate z...reflect in the xy plane
 {
-  int i;
-  int movement_type;
-  double current_param;
-
-  D3d_make_identity(mat);
-  D3d_make_identity(inv);
-
-  for (i=0; i < num_movements; i++){
-    movement_type = movement_type_list[i];//Fetches current movement type
-    current_param = parameter_list[i];//Fetches current necessary parameter
-
-    
-    switch(movement_type){
-      //Scaling
-    case SX:
-      D3d_scale (mat,inv,current_param,1,1);
-      break;
-    case SY:
-      D3d_scale (mat,inv,1,current_param,1);
-      break;
-    case SZ:
-      D3d_scale (mat,inv,1,1,current_param);
-      break;
-      //Rotating
-      //Have to multiply by pi/180 because parameter is in degrees 
-    case RX:
-      D3d_rotate_x(mat,inv,current_param*(M_PI/180));
-      break;
-    case RY:
-      D3d_rotate_y(mat,inv,current_param*(M_PI/180));
-      break;
-    case RZ:
-      D3d_rotate_z(mat,inv,current_param*(M_PI/180));
-      break;
-      //Translating
-    case TX:
-      D3d_translate(mat,inv,current_param,0,0);
-      break;
-    case TY:
-      D3d_translate(mat,inv,0,current_param,0);
-      break;
-    case TZ:
-      D3d_translate(mat,inv,0,0,current_param);
-      break;
-      //Negating
-    case NX:
-      D3d_negate_x(mat,inv);
-      break;
-    case NY:
-      D3d_negate_y(mat,inv);
-      break;
-    case NZ:
-      D3d_negate_z(mat,inv);
-      break;
-    default: return 0; break;//should only occur if failed
-    }//end of switch
-  }//end of loop.
-  return 1;
-}//end of function
+ int i;
+ int m ;
+ double p ;
 
 
-int D3d_view (double view[4][4],  double view_inverse[4][4],
-              double eye[3], double coi[3], double up[3]) 
+ D3d_make_identity( mat ) ;
+ D3d_make_identity( inv ) ;
+
+
+ for (i = 0 ; i < num_movements ; i++) {
+
+   m = movement_type_list[i] ;
+   p = parameter_list[i] ;
+
+   switch (m) {
+
+   case SX : 
+        D3d_scale (mat, inv,   p, 1.0, 1.0 ) ;
+        break ;
+
+   case SY : 
+        D3d_scale (mat, inv,   1.0, p, 1.0 ) ;
+        break ;
+
+   case SZ : 
+        D3d_scale (mat, inv,   1.0, 1.0, p ) ;
+        break ;
+
+   case RX :
+        D3d_rotate_x (mat, inv,    p*M_PI/180) ;
+        break ;
+
+   case RY :
+        D3d_rotate_y (mat, inv,    p*M_PI/180) ;
+        break ;
+
+   case RZ :
+        D3d_rotate_z (mat, inv,    p*M_PI/180) ;
+        break ;
+
+   case TX :
+        D3d_translate (mat, inv,   p, 0.0, 0.0 ) ;
+        break ;
+
+   case TY :
+        D3d_translate (mat, inv,   0.0, p, 0.0 ) ;
+        break ;
+
+   case TZ :
+        D3d_translate (mat, inv,   0.0, 0.0, p ) ;
+        break ;
+
+   case NX :
+        D3d_negate_x (mat, inv) ;
+        break ;
+
+   case NY :
+        D3d_negate_y (mat, inv) ;
+        break ;
+
+   case NZ :
+        D3d_negate_z (mat, inv) ;
+        break ;
+
+   default :
+        printf("ERROR:  D3d_make_movement_sequence_matrix : unrecognized matrix type = %d\n\n", m) ;
+        
+        return 0 ;
+
+        break ;   
+
+   }
+
+ }
+
+
+ return 1 ;
+
+}
+
+
+
+
+
+//////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+int D3d_viewAA (double view[4][4], double view_inverse[4][4],
+                double eye[3], double coi[3], double up[3],
+                double a, double b, double c, double p, double r)
+// return 1 if successful, 0 otherwise
+{
+    double Uplen ;
+    double Up[3] ;
+
+    if ((p == 0) || (r == 0)) return 0 ;
+
+    D3d_make_identity(view) ;     
+    D3d_make_identity(view_inverse) ;     
+    D3d_translate(view,view_inverse, -eye[0], -eye[1], -eye[2]) ;
+    D3d_cs_rotate_y (view,view_inverse, c/p, -a/p) ;
+    D3d_cs_rotate_x (view,view_inverse, p/r,  b/r) ;
+
+    D3d_mat_mult_pt (Up, view, up) ;
+    Uplen = sqrt(Up[0]*Up[0] + Up[1]*Up[1]) ;
+
+    if (Uplen == 0) return 0 ;
+
+    D3d_cs_rotate_z (view,view_inverse, Up[1]/Uplen, Up[0]/Uplen) ;
+
+    return 1 ;
+}
+
+
+
+
+
+
+
+
+int D3d_viewBB (double view[4][4], double view_inverse[4][4],
+                double eye[3], double coi[3], double up[3],
+                double a, double b, double c, double p, double r)
+// return 1 if successful, 0 otherwise
+{
+    double Uplen ;
+    double Up[3] ;
+
+    p = sqrt(b*b + c*c) ; // alter the incoming p
+
+    if ((p == 0) || (r == 0)) return 0 ;
+
+    D3d_make_identity(view) ;     
+    D3d_make_identity(view_inverse) ;     
+    D3d_translate(view,view_inverse, -eye[0], -eye[1], -eye[2]) ;
+    D3d_cs_rotate_x (view,view_inverse, c/p,  b/p) ;
+    D3d_cs_rotate_y (view,view_inverse, p/r, -a/r) ;
+
+    D3d_mat_mult_pt (Up, view, up) ;
+    Uplen = sqrt(Up[0]*Up[0] + Up[1]*Up[1]) ;
+
+    if (Uplen == 0) return 0 ;
+
+    D3d_cs_rotate_z (view,view_inverse, Up[1]/Uplen, Up[0]/Uplen) ;
+
+    return 1 ;
+}
+        
+
+
+
+
+
+
+
+
+int D3d_view (double view[4][4], double view_inverse[4][4],
+              double eye[3], double coi[3], double up[3])
 // Construct the view matrix and its inverse given the location
 // of the eye, the center of interest, and an up point.
 // return 1 if successful, 0 otherwise.
 {
-  //First translate points with eye at 0,0,0
-  //Then rotate COI into xz plane
-  //Then rotate COI into positive z axis
-  //Rotate so up point is in yz plane
+    double a,b,c,p,r ;
+    int s ;
 
-  //Identity Stuffs
-  D3d_make_identity(view);
-  D3d_make_identity(view_inverse);
 
-  //Translate with eye at 0,0,0
-  D3d_translate(view,view_inverse, -eye[0], -eye[1], -eye[2]);
-  D3d_mat_mult_pt(coi,view,coi);
+    // printf("entering D3d_view\n") ;
+    a = coi[0] - eye[0] ;
+    b = coi[1] - eye[1] ;
+    c = coi[2] - eye[2] ;
+    p = sqrt(a*a + c*c) ;
+    r = sqrt(a*a + b*b + c*c) ;
 
-  //Rotate into x and y
-  double a0 = coi[0];
-  double a1 = coi[1];
-  double a2 = coi[2];
-  double side3 = sqrt((a0 * a0) + (a2 * a2));
-  
-  D3d_cs_rotate_y(view, view_inverse, (a2 / side3), (-a0 / side3));
-  double total = sqrt((a0 * a0) + (a1 * a1) + (a2 * a2));
-  D3d_cs_rotate_x(view, view_inverse, (side3 / total), (a1 / total));
-  D3d_mat_mult_pt(up, view, up);
+    // printf("a,b,c,p,r = %lf %lf %lf %lf %lf\n\n",a,b,c,p,r) ;
 
-  //Rotate into z axis
-  double x0 = up[0];
-  double y0 = up[1];
-  side3 = sqrt((x0 * x0) + (y0 * y0));
-  D3d_cs_rotate_z(view, view_inverse, (y0 / side3), (x0 / side3));
+    if (fabs(b) < p) {
+         // printf("choose AA\n") ;
+         s = D3d_viewAA (view, view_inverse,
+                         eye, coi, up,
+                         a,b,c,p,r) ;
+    } else {
+         // printf("choose BB\n") ;
+         s = D3d_viewBB (view, view_inverse,
+                         eye, coi, up,
+                         a,b,c,p,r) ;
+    }
 
+    if (s == 0) printf("D3d_view error\n") ;
+
+    // printf("leaving D3d_view\n") ;
+
+    return s ;
 }
+
 
 
 
