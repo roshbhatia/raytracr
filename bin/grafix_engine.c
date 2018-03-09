@@ -51,7 +51,7 @@ int init(){
 	//Eye
 	eye[0] = 0;
 	eye[1] = 0;
-	eye[2] = -15;
+	eye[2] = -10;
 	
 	//Center of Interest
 	center_of_interest[0] = 0;
@@ -242,40 +242,34 @@ int main(){
   init();
   //Create map
   map = create_new_xwd_map(width, hieght);
-
-  //File stuffs
-  sprintf(filename,"%s%04d.xwd", file, filenum);
-  filenum += 1;
-  xwd_map_to_named_xwd_file(map,filename);
 		
   //D3d_make_identity(view);
   //D3d_make_identity(mat_inv);
   D3d_view(view, view_inv, eye, center_of_interest, up);
 
   //hyperbeloid
-  double rgb[3] = {1,0,0};
-		
+  double rgb[3] = {.5,0,.5};
   Tn = 0;
-  Ttypelist[Tn] = SY; 
-  Tvlist[Tn] =  5; 
-  Tn++;
-  D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
-	
-  fnum = 9;
-  plot_3d(map, f9, mat, rgb);
 
-  //sphere
-  double rgb2[3] = {0,0,1};
-  Tn = 0;
-  Ttypelist[Tn] = TX; 
-  Tvlist[Tn] =  -5; 
-  Tn++;
-  D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
+  int i;
+  for (i = 0; i < 100; i++){
+    Ttypelist[Tn] = SY; 
+    Tvlist[Tn] =  1.01; 
+    Tn++;
+    D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
 	
-  fnum = 8;
-  plot_3d(map, f8, mat, rgb2);
-  xwd_map_to_named_xwd_file(map, filename);
+    fnum = 8;
+    plot_3d(map, f8, mat, rgb);
 
+    sprintf(filename,"%s%04d.xwd", file, filenum);
+    xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
+    filenum ++;
+
+    
+    //clear map
+    map = create_new_xwd_map(width,hieght);
+  }
+  
   return 1;
 }
 
