@@ -158,9 +158,10 @@ int D3d_x_product (double res[3], double a[3], double b[3]) ;
 // D3d_x_product (a,  a,a) 
 
 
+double D3d_dot_product(double vector1[3], double vector2[3]);
 
 
-
+int D3d_normalize(double *vector);
 
 int D3d_make_movement_sequence_matrix (
                               double mat[4][4],
