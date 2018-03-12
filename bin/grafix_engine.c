@@ -173,8 +173,8 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 	double u, v;
 	//Maps every point to matrix w/ translations
-	for (u = ulo; u <= uhi; u+= 0.0025){
-	  for(v = vlo; v <= vhi ; v += 0.0025) {
+	for (u = ulo; u <= uhi; u+= 0.00125){
+	  for(v = vlo; v <= vhi ; v += 0.00125) {
 	    
 	    //reinit temp_rgb
 	    temp_rgb[0] = rgb[0];
