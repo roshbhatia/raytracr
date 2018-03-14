@@ -1,7 +1,7 @@
 #include <FPT.h>
 
 
-int main ()
+int main (int argc, char **argv)
 {
   int width,height ;
   char prefix[100], sequence_name[100] ;
@@ -11,17 +11,26 @@ int main ()
 
   printf("movie player ... q to quit, any other key to keep playing movie\n") ;
 
-  printf("enter window width and height ") ;
-  scanf("%d %d",&width,&height) ;
+  //printf("enter window width and height ") ;
+  //scanf("%d %d",&width,&height) ;
+  width = 800; height = 800;
+  if(argc < 4) {
+    printf("usage: command <prefix name> <start> <end>");
+    exit(0);
+  }
 
-  printf("enter prefix name ") ;
-  scanf("%s",prefix) ;
+  //printf("enter prefix name ") ;
+  //scanf("%s",prefix) ;
+  sprintf(prefix,argv[1]);
 
-  printf("enter starting integer ") ;
-  scanf("%d",&s) ;
+  //printf("enter starting integer ") ;
+  //scanf("%d",&s) ;
+  char **what;
+  s = strtol(argv[2], what, 10);
 
-  printf("enter ending integer ") ;
-  scanf("%d",&e) ;
+  //printf("enter ending integer ") ;
+  //scanf("%d",&e) ;
+  e = strtol(argv[3], what, 10);
 
   /*
   printf("\n") ;
