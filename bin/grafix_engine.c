@@ -45,38 +45,37 @@ int init_zbuffer(){
 
 //Initializes arrays and sets view matrix
 int init(){
-	//zbuffer
-	init_zbuffer();
+  //zbuffer
+  init_zbuffer();
 	
-	//Eye
-	eye[0] = 0;
-	eye[1] = 0;
-	eye[2] = -10;
+  //Eye
+  eye[0] = 0;
+  eye[1] = 0;
+  eye[2] = -5;
 	
-	//Center of Interest
-	center_of_interest[0] = 0;
-	center_of_interest[1] = 0;
-	center_of_interest[2] = 0;
+  //Center of Interest
+  center_of_interest[0] = 0;
+  center_of_interest[1] = 0;
+  center_of_interest[2] = 0;
 	
-	//Up is just the Eye[1] + 1
-	up[0] = eye[0];
-	up[1] = eye[1] + 1;
-	up[2] = eye[2];
+  //Up is just the Eye[1] + 1
+  up[0] = eye[0];
+  up[1] = eye[1] + 1;
+  up[2] = eye[2];
 	
-	//Light source
-	light_source[0] = -20;
-	light_source[1] = 5;
-	light_source[2] = -20;
+  //Light source
+  light_source[0] = -20;
+  light_source[1] = 5;
+  light_source[2] = -20;
 	
-	//View Matrix
-	D3d_make_identity(view);
-	D3d_make_identity(view_inv);
-	D3d_view(view,view_inv,eye,center_of_interest,up);
+  //View Matrix
+  D3d_make_identity(view);
+  D3d_make_identity(view_inv);
+  D3d_view(view,view_inv,eye,center_of_interest,up);
 	
-	//Spec max
-	spec_max =  1 - ambient - diffuse;
-
-	return 1;
+  //Spec max
+  spec_max =  1 - ambient - diffuse;
+  return 1;
 }
 
 
@@ -148,7 +147,7 @@ int light_model(double *vector1, double *vector2, double *xyz, double *rgb){
   }
   
   double intensity = ambient + (diffuse * nl) + (spec_max * pow(er,specularity));
-  // printf("\n%lf",er);
+  //printf("\nIntensity: %lf", intensity);
   shade (rgb, ambient + diffuse , intensity);
   return 1;
 }
@@ -210,11 +209,11 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 	    else if (fnum == 9){
 	      light_model(t1, t2, xyz, temp_rgb);
 	    }
-
+	    
 	    //translates xyz to xy plane
 	    p[0] = (400/tan(half_angle)) * (xyz[0]/xyz[2]) + (width/2);
 	    p[1] = (400/tan(half_angle)) * (xyz[1]/xyz[2]) + (hieght/2);
- 
+       
 	    //saves zvalue of xyz into zbuffer[translatedx][translatedy]
 	    if ((p[0] < 800 && p[0] > -1) && (p[1] < 800 && p[1] > -1)){
 	      if (xyz[2] < zbuffer[p[0]] [p[1]]){
@@ -253,13 +252,15 @@ int main(){
 
   int i;
   for (i = 0; i < 100; i++){
+    printf("\n");
+    D3d_print_mat(mat);
     Ttypelist[Tn] = SY; 
     Tvlist[Tn] =  1.01; 
     Tn++;
     D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
 	
-    fnum = 8;
-    plot_3d(map, f8, mat, rgb);
+    fnum = 9;
+    plot_3d(map, f9, mat, rgb);
 
     sprintf(filename,"%s%04d.xwd", file, filenum);
     xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
