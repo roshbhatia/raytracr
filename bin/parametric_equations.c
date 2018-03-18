@@ -12,6 +12,7 @@ int f1 (double u, double xy[2])
 {
   xy[0] = cos(u) ;  
   xy[1] = sin(u) ;
+  return 1;
 }
 
 
@@ -22,6 +23,7 @@ int f2 (double u, double xy[2])
   c = cos(u) ; s = sin(u) ;
   xy[0] = sgn(c)*sqrt(fabs(c)) ;
   xy[1] = sgn(s)*sqrt(fabs(s)) ;
+  return 1;
 }
 
 
@@ -32,6 +34,7 @@ int f3 (double u, double xy[2])
   c = cos(u) ; s = sin(u) ;
   xy[0] = sgn(c)*c*c ;
   xy[1] = sgn(s)*s*s ;
+  return 1;
 }
 
 
@@ -42,6 +45,7 @@ int f4 (double u, double xy[2])
   c = cos(u) ; s = sin(u) ;
   xy[0] = sgn(c)*c*c*c*c ;
   xy[1] = sgn(s)*s*s*s*s ;
+  return 1;
 }
 
 
@@ -51,6 +55,7 @@ int f5 (double u, double xy[2])
 {
   xy[0] = cosh(u) ;
   xy[1] = sinh(u) ;
+  return 1;
 }
 
 
@@ -59,6 +64,7 @@ int f6 (double u, double xy[2])
 {
   xy[0] = u ;
   xy[1] = u*u ;
+  return 1;
 }
 
 
@@ -69,6 +75,7 @@ int f7 (double u, double xy[2])
   c = cos(u) ;
   xy[0] = c*c*c ;
   xy[1] = sin(u) ;
+  return 1;
 }
 
 //sphere : x^2 + y^2 + z^2 =0
@@ -77,16 +84,15 @@ int f8(double u, double v, double xyz[3]){
   xyz[0] = cos(v) * cos(u);
   xyz[1] = sin(v);
   xyz[2] = cos(v) * sin(u);
-
+  return 1;
 }
 
 //hyperboloid
 int f9 (double u, double v, double xyz[3]) {        
-      
-
   xyz[0] = sqrt(1+(u*u)) * cos(v);        
   xyz[1] = u;        
-  xyz[2] = sqrt(1+(u*u)) * sin(v);                          
+  xyz[2] = sqrt(1+(u*u)) * sin(v);
+  return 1;
 }   
 
 

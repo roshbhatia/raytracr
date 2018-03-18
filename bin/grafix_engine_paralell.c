@@ -100,13 +100,13 @@ int shade(double *rgb, double ambientplusdiffuse, double intensity){
     new_rgb[1] = t * rgb[1] + ratio;
     new_rgb[2] = t * rgb[2] + ratio;
   }
-
   rgb[0] = new_rgb[0];
   rgb[1] = new_rgb[1];
   rgb[2] = new_rgb[2];
 
   return 1;
 }
+ 
 
 
 int light_model(double *vector1, double *vector2, double *xyz, double *rgb){
@@ -150,6 +150,7 @@ int light_model(double *vector1, double *vector2, double *xyz, double *rgb){
   
   double intensity = ambient + (diffuse * nl) + (spec_max * pow(er,specularity));
   shade (rgb, ambient + diffuse , intensity);
+
   return 1;
 }
 
@@ -241,7 +242,6 @@ int main(int argc, char *argv[]){
   sprintf(file, "./output/%s", argv[1]);
   int framenum = atoi(argv[2]);
 
-  printf("\n%d", framenum);
   //Initialize
   init();
   //Create map
@@ -263,8 +263,8 @@ int main(int argc, char *argv[]){
     Tn ++;
   }
   D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
-  fnum = 8;
-  plot_3d(map, f8, mat, rgb);
+  fnum = 9;
+  plot_3d(map, f9, mat, rgb);
 
   sprintf(filename,"%s%s.xwd", file, argv[2]);
   // printf("\n%s", filename); exit(99);
