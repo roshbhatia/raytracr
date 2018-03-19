@@ -247,8 +247,6 @@ int main(int argc, char *argv[]){
   //Create map
   map = create_new_xwd_map(width, hieght);
 		
-  //D3d_make_identity(view);
-  //D3d_make_identity(mat_inv);
   D3d_view(view, view_inv, eye, center_of_interest, up);
 
   //hyperbeloid
@@ -267,7 +265,6 @@ int main(int argc, char *argv[]){
   plot_3d(map, f9, mat, rgb);
 
   sprintf(filename,"%s%s.xwd", file, argv[2]);
-  // printf("\n%s", filename); exit(99);
   xwd_map_to_named_xwd_file(map, filename);  
     
   //clear map
