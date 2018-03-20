@@ -256,13 +256,19 @@ int main(int argc, char *argv[]){
   
   int i;
   for (i = 0; i <= framenum; i++){
-    Ttypelist[Tn] = SY;
+    Ttypelist[Tn] = SX;
     Tvlist[Tn] = 1.01; 
+    Tn ++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = .505;
+    Tn ++;
+    Ttypelist[Tn] = RY;
+    Tvlist[Tn] = .1;
     Tn ++;
   }
   D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
-  fnum = 9;
-  plot_3d(map, f9, mat, rgb);
+  fnum = 8;
+  plot_3d(map, f8, mat, rgb);
 
   sprintf(filename,"%s%s.xwd", file, argv[2]);
   xwd_map_to_named_xwd_file(map, filename);  

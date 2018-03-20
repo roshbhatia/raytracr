@@ -7,7 +7,7 @@
 
 //General window vars
 int width = 800;
-int hieght = 800;
+int height = 800;
 
 //3d vars
 double half_angle = 30 * M_PI/180; 
@@ -36,7 +36,7 @@ double zbuffer[800][800];
 int init_zbuffer(){
 	int i, j;
 	for (i = 0; i < width; i++){
-		for (j = 0; j < hieght; j++){
+		for (j = 0; j < height; j++){
 		  zbuffer[i][j] = pow(100,100); 
 		}
 	}
@@ -51,7 +51,7 @@ int init(){
   //Eye
   eye[0] = 0;
   eye[1] = 0;
-  eye[2] = -5;
+  eye[2] = -10;
 	
   //Center of Interest
   center_of_interest[0] = 0;
@@ -172,8 +172,8 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 	double u, v;
 	//Maps every point to matrix w/ translations
-	for (u = ulo; u <= uhi; u+= 0.00125){
-	  for(v = vlo; v <= vhi ; v += 0.00125) {
+	for (u = ulo; u <= uhi; u+= 0.025){
+	  for(v = vlo; v <= vhi ; v += 0.025) {
 	    
 	    //reinit temp_rgb
 	    temp_rgb[0] = rgb[0];
@@ -212,7 +212,7 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 	    
 	    //translates xyz to xy plane
 	    p[0] = (400/tan(half_angle)) * (xyz[0]/xyz[2]) + (width/2);
-	    p[1] = (400/tan(half_angle)) * (xyz[1]/xyz[2]) + (hieght/2);
+	    p[1] = (400/tan(half_angle)) * (xyz[1]/xyz[2]) + (height/2);
        
 	    //saves zvalue of xyz into zbuffer[translatedx][translatedy]
 	    if ((p[0] < 800 && p[0] > -1) && (p[1] < 800 && p[1] > -1)){
@@ -237,10 +237,12 @@ int main(){
   int map;
   char *file = "output/sphere", filename[25];
 
+
+  /**
   //Initialize
   init();
   //Create map
-  map = create_new_xwd_map(width, hieght);
+  map = create_new_xwd_map(width, height);
 		
   //D3d_make_identity(view);
   //D3d_make_identity(mat_inv);
@@ -248,6 +250,8 @@ int main(){
 
   //hyperbeloid
   double rgb[3] = {.5,0,.5};
+
+
   Tn = 0;
 
   int i;
@@ -268,7 +272,102 @@ int main(){
 
     
     //clear map
-    map = create_new_xwd_map(width,hieght);
+    map = create_new_xwd_map(width,height);
+  }**/
+
+
+  init();
+  D3d_make_identity(mat_inv);
+  double sphere_rgb[3] = {.5,0,.5};
+  double hyperbeloid_rgb[3] = {0,.5,0};
+
+
+  double u;
+  for(u = 0; u < 2 * M_PI; u+= M_PI/50){
+    
+    //Reinitialize some stuff
+    map = create_new_xwd_map(width, height); //Needs a clear map for every frame
+    init_zbuffer();//Needs a clear zbuffer for every frame
+
+    //VIEW matrix stuffs, we only move the view around
+    //Set values for eye
+    eye[0] = 10 * cos(u); //We use u as we're moving in a circle around the object
+    eye[1] = 3 * cos(4*u) + 4;
+    eye[2] = 10 * sin(u);
+
+    //Because we're changing eye we need to reinitialize up
+    up[0] = eye[0];
+    up[1] = eye[1] + 1;
+    up[2] = eye[2];
+    D3d_make_identity(view); //Remake view matrix every time because init only runs once
+    D3d_view(view,view_inv,eye,center_of_interest,up);
+
+    //First Sphere
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
+
+    Tn = 0;
+    Ttypelist[Tn] = TX;
+    Tvlist[Tn] = 4;
+    Tn++;
+
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 8;
+    plot_3d(map, f8, mat, sphere_rgb);
+
+    //Second Sphere
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
+
+    Tn = 0;
+    Ttypelist[Tn] = TX;
+    Tvlist[Tn] = -2;
+    Tn++;
+
+    Ttypelist[Tn] = TZ;
+    Tvlist[Tn] = 2*sqrt(3);
+    Tn++;
+
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 8;
+    plot_3d(map, f8, mat, sphere_rgb);
+
+
+    //Third Sphere
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
+
+    Tn = 0;
+    Ttypelist[Tn] = TX;
+    Tvlist[Tn] = -2;
+    Tn++;
+
+    Ttypelist[Tn] = TZ;
+    Tvlist[Tn] = -2*sqrt(3);
+    Tn++;
+
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 8;
+    plot_3d(map, f8, mat, sphere_rgb);
+
+    //Fourth Sphere
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
+
+    Tn = 0;
+    Ttypelist[Tn] = TY;
+    Tvlist[Tn] = 4 * sqrt(2);
+    Tn++;
+
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 8;
+    plot_3d(map, f8, mat, sphere_rgb);   
+
+
+    sprintf(filename,"%s%04d.xwd", file, filenum);
+    xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
+    filenum ++;
+
   }
   
   return 1;
