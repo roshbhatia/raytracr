@@ -236,46 +236,7 @@ int main(){
   double mat[4][4], mat_inv[4][4];
   int map;
   char *file = "output/sphere", filename[25];
-
-
-  /**
-  //Initialize
-  init();
-  //Create map
-  map = create_new_xwd_map(width, height);
-		
-  //D3d_make_identity(view);
-  //D3d_make_identity(mat_inv);
-  D3d_view(view, view_inv, eye, center_of_interest, up);
-
-  //hyperbeloid
-  double rgb[3] = {.5,0,.5};
-
-
-  Tn = 0;
-
-  int i;
-  for (i = 0; i < 100; i++){
-    printf("\n");
-    D3d_print_mat(mat);
-    Ttypelist[Tn] = SY; 
-    Tvlist[Tn] =  1.01; 
-    Tn++;
-    D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
-	
-    fnum = 9;
-    plot_3d(map, f9, mat, rgb);
-
-    sprintf(filename,"%s%04d.xwd", file, filenum);
-    xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
-    filenum ++;
-
-    
-    //clear map
-    map = create_new_xwd_map(width,height);
-  }**/
-
-
+  
   init();
   D3d_make_identity(mat_inv);
   double sphere_rgb[3] = {.5,0,.5};
