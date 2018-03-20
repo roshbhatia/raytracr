@@ -14,7 +14,7 @@ double half_angle = 30 * M_PI/180;
 double eye[3];
 double center_of_interest[3];
 double up[3];
-double view[4][4];
+double view[4][4]; 
 double view_inv[4][4];
 
 
@@ -64,9 +64,9 @@ int init(){
   up[2] = eye[2];
 	
   //Light source
-  light_source[0] = 2;
-  light_source[1] = 10;
-  light_source[2] = -5;
+  light_source[0] = eye[0];
+  light_source[1] = eye[1];
+  light_source[2] = eye[2] - 2;
 	
   //View Matrix
   D3d_make_identity(view);
@@ -327,6 +327,26 @@ int main(){
     plot_3d(map, f8, mat, sphere_rgb);   
 
     ////END OF SPHERES
+    ////BEGINNING OF HYPERBELOIDS
+
+    //Hyperbeloid 1
+    Tn = 0;
+    Ttypelist[Tn] = SX;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SZ;
+    Tvlist[Tn] = 2;
+    Tn++;
+    Ttypelist[Tn] = TX;
+    Tvlist[Tn] = -2;
+    Tn++;
+
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 9;
+    plot_3d(map, f9, mat, hyperbeloid_rgb);
 
 
 
