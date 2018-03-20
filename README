@@ -1,10 +1,16 @@
 To compile:
 	For current project:
 		CD into ./bin and run "make". 
+	For parallelized project:
+		CD into ./bin and run "make paralell"
 	For old projects:
 		Copy desired folder from ./old into ../../, then CD into bin and run "make"
 To run:
-	Execute a.out! The frames will be placed in ./output/
-	View the frames by executing ./output/play when inside ./output
+	For current project:
+		Run "./a.out"!
+	For parallelized project	
+		run "python3 exec_paralell.py FILENAME STARTINGFRAME ENDINGFRAME"
+	The frames will be placed in ./output/
+	View the frames by executing "./play" when inside ./output
 Misc:
 	Remove the old frames by running "make clear" from inside ./bin
