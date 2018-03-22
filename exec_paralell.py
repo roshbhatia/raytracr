@@ -15,7 +15,7 @@ active_jobs = []
 
 def Worker(l, framenum):
     #l.acquire()
-    proc =  subprocess.Popen(["./a.out", FILENAMEPREFIX, str(framenum).zfill(4)])
+    proc =  subprocess.Popen(["./singleframe.out", FILENAMEPREFIX, str(framenum).zfill(4)])
     proc.wait()
     print("\nCompleted Job # " + str(framenum))
     #l.release()

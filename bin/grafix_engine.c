@@ -172,8 +172,8 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 	double u, v;
 	//Maps every point to matrix w/ translations
-	for (u = ulo; u <= uhi; u+= 0.0025){
-	  for(v = vlo; v <= vhi ; v += 0.0025) {
+	for (u = ulo; u <= uhi; u+= 0.003){
+	  for(v = vlo; v <= vhi ; v += 0.003) {
 	    
 	    //reinit temp_rgb
 	    temp_rgb[0] = rgb[0];
@@ -240,7 +240,7 @@ int main(){
   init();
   D3d_make_identity(mat_inv);
   double sphere_rgb[3] = {.5, 0, .5};
-  double hyperbeloid_rgb[3] = {0, .5 , 0};
+  double hyperbeloid_rgb[3] = {1, 0 , 0};
 
 
   double u;
@@ -253,7 +253,7 @@ int main(){
     //VIEW matrix stuffs, we only move the view around
     //Set values for eye
     eye[0] = 10 * cos(u); //We use u as we're moving in a circle around the object
-    eye[1] = (3 * cos(4 * u)) + 4;
+    eye[1] = (3 * cos(4 * u)) + 8;
     eye[2] = 10 * sin(u);
 
     //Because we're changing eye we need to reinitialize up
@@ -328,8 +328,11 @@ int main(){
 
     ////END OF SPHERES
     ////BEGINNING OF HYPERBELOIDS
-
+    
     //Hyperbeloid 1
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
+
     Tn = 0;
     Ttypelist[Tn] = SX;
     Tvlist[Tn] = 0.5;
@@ -338,7 +341,13 @@ int main(){
     Tvlist[Tn] = 0.5;
     Tn++;
     Ttypelist[Tn] = SZ;
-    Tvlist[Tn] = 2;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 5.5;
+    Tn++;
+    Ttypelist[Tn] = RX;
+    Tvlist[Tn] = 90; 
     Tn++;
     Ttypelist[Tn] = TX;
     Tvlist[Tn] = -2;
@@ -347,8 +356,11 @@ int main(){
     D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
     fnum = 9;
     plot_3d(map, f9, mat, hyperbeloid_rgb);
-
+    
     //Hyperbeloid 2
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
+
     Tn = 0;
     Ttypelist[Tn] = SX;
     Tvlist[Tn] = 0.5;
@@ -357,23 +369,29 @@ int main(){
     Tvlist[Tn] = 0.5;
     Tn++;
     Ttypelist[Tn] = SZ;
-    Tvlist[Tn] = 2;
+    Tvlist[Tn] = 0.5;
     Tn++;
-    Ttypelist[Tn] = RY;
-    Tvlist[Tn] = 60; 
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 5.5;
     Tn++;
+  //  Ttypelist[Tn] = RY;
+  //  Tvlist[Tn] = 60; 
+  //  Tn++;
     Ttypelist[Tn] = TX;
     Tvlist[Tn] = 1; 
     Tn++;
     Ttypelist[Tn] = TZ; 
-    Tvlist[Tn] = (-2 * sqrt(3)) + sqrt(3);
+    Tvlist[Tn] = -((-2 * sqrt(3)) + sqrt(3));
     Tn++;
     D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
     fnum = 9;
     plot_3d(map, f9, mat, hyperbeloid_rgb);
-
+    
     //Hyperbeloid 3
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
     Tn = 0;
+
     Ttypelist[Tn] = SX;
     Tvlist[Tn] = 0.5;
     Tn++;
@@ -381,54 +399,33 @@ int main(){
     Tvlist[Tn] = 0.5;
     Tn++;
     Ttypelist[Tn] = SZ;
-    Tvlist[Tn] = 2;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 5.5;
+    Tn++;
+    Ttypelist[Tn] = RZ;
+    Tvlist[Tn] = 90;
     Tn++;
     Ttypelist[Tn] = RY;
-    Tvlist[Tn] = 60; 
+    Tvlist[Tn] = -30;
     Tn++;
     Ttypelist[Tn] = TX;
     Tvlist[Tn] = 1; 
     Tn++;
     Ttypelist[Tn] = TZ; 
     Tvlist[Tn] = (-2 * sqrt(3)) + sqrt(3);
-    Tn++;
-    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
-    fnum = 9;
-    plot_3d(map, f9, mat, hyperbeloid_rgb);
-
-    //Hyperbeloid 4
-    Tn=0;
-    Ttypelist[Tn] = SX;
-    Tvlist[Tn] = 0.5;
-    Tn++;
-    Ttypelist[Tn] = SY;
-    Tvlist[Tn] =  0.5;
-    Tn++;
-    Ttypelist[Tn] = SZ; 
-    Tvlist[Tn] = 2; 
-    Tn++;
-    Ttypelist[Tn] = RY; 
-    Tvlist[Tn] = -60;
-    Tn++;
-    Ttypelist[Tn] = TX; 
-    Tvlist[Tn] = 1;
-    Tn++;
-    Ttypelist[Tn] = TZ;
-    Tvlist[Tn] =  (2 * sqrt(3)) - sqrt(3); 
-    Tn++;
-
+    Tn++; 
+    
 
     D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
     fnum = 9;
     plot_3d(map, f9, mat, hyperbeloid_rgb);
-
-
-
 
 
     sprintf(filename,"%s%04d.xwd", file, filenum);
-    xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
     filenum ++;
+    xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
 
   }
   

@@ -174,8 +174,8 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 	double u, v;
 	//Maps every point to matrix w/ translations
-	for (u = ulo; u <= uhi; u+= 0.00125){
-	  for(v = vlo; v <= vhi ; v += 0.00125) {
+	for (u = ulo; u <= uhi; u+= 0.003){
+	  for(v = vlo; v <= vhi ; v += 0.03) {
 	    
 	    //reinit temp_rgb
 	    temp_rgb[0] = rgb[0];
@@ -260,15 +260,12 @@ int main(int argc, char *argv[]){
     Tvlist[Tn] = 1.01; 
     Tn ++;
     Ttypelist[Tn] = SY;
-    Tvlist[Tn] = .505;
-    Tn ++;
-    Ttypelist[Tn] = RY;
-    Tvlist[Tn] = .1;
+    Tvlist[Tn] = 1.505;
     Tn ++;
   }
   D3d_make_movement_sequence_matrix (mat, mat_inv, Tn, Ttypelist, Tvlist);
-  fnum = 8;
-  plot_3d(map, f8, mat, rgb);
+  fnum = 9;
+  plot_3d(map, f9, mat, rgb);
 
   sprintf(filename,"%s%s.xwd", file, argv[2]);
   xwd_map_to_named_xwd_file(map, filename);  
