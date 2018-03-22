@@ -374,9 +374,12 @@ int main(){
     Ttypelist[Tn] = SY;
     Tvlist[Tn] = 5.5;
     Tn++;
-  //  Ttypelist[Tn] = RY;
-  //  Tvlist[Tn] = 60; 
-  //  Tn++;
+    Ttypelist[Tn] = RX;
+    Tvlist[Tn] = 90; 
+    Tn++;
+    Ttypelist[Tn] = RY;
+    Tvlist[Tn] = -60; 
+    Tn++;
     Ttypelist[Tn] = TX;
     Tvlist[Tn] = 1; 
     Tn++;
