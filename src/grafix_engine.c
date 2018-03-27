@@ -444,10 +444,10 @@ int main(){
     Ttypelist[Tn] = SY;
     Tvlist[Tn] = 5.5;
     Tn++;
-    Ttypelist[Tn] = RX; 
+    Ttypelist[Tn] = RY; 
     Tvlist[Tn] =   90; 
     Tn++;
-    Ttypelist[Tn] = RY; 
+    Ttypelist[Tn] = RX; 
     Tvlist[Tn] =   30; 
     Tn++;
     Ttypelist[Tn] = RZ; 
