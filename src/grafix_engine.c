@@ -172,8 +172,8 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 	double u, v;
 	//Maps every point to matrix w/ translations
-	for (u = ulo; u <= uhi; u+= 0.005){
-	  for(v = vlo; v <= vhi ; v += 0.005) {
+	for (u = ulo; u <= uhi; u+= 0.02){
+	  for(v = vlo; v <= vhi ; v += 0.02) {
 	    
 	    //reinit temp_rgb
 	    temp_rgb[0] = rgb[0];
@@ -447,11 +447,8 @@ int main(){
     Ttypelist[Tn] = RY; 
     Tvlist[Tn] =   90; 
     Tn++;
-    Ttypelist[Tn] = RX; 
-    Tvlist[Tn] =   30; 
-    Tn++;
     Ttypelist[Tn] = RZ; 
-    Tvlist[Tn] =   30; 
+    Tvlist[Tn] =   37.5; 
     Tn++;
     Ttypelist[Tn] = TX; 
     Tvlist[Tn] =    2; 
@@ -462,6 +459,23 @@ int main(){
     D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
     fnum = 9;
     plot_3d(map, f9, mat, hyperbeloid_rgb);
+
+    //Hyperbeloid 5
+    Ttypelist[Tn] = RZ; 
+    Tvlist[Tn] =   120; 
+    Tn++;
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 9;
+    plot_3d(map, f9, mat, hyperbeloid_rgb);
+
+   
+    //Hyperbeloid 6
+    Ttypelist[Tn] = RZ; 
+    Tvlist[Tn] =   120; 
+    Tn++;
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 9;
+    plot_3d(map, f9, mat, hyperbeloid_rgb); 
 
     sprintf(filename,"%s%04d.xwd", file, filenum);
     filenum ++;
