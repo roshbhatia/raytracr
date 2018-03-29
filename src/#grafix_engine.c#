@@ -20,7 +20,7 @@ double view_inv[4][4];
 
 //Lighting vars
 double light_source[3];
-double ambient = 0.2;
+double ambient = 0.1;
 double diffuse = 0.5;
 double specularity = 50;
 double spec_max; 
@@ -172,8 +172,8 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 	double u, v;
 	//Maps every point to matrix w/ translations
-	for (u = ulo; u <= uhi; u+= 0.003){
-	  for(v = vlo; v <= vhi ; v += 0.003) {
+	for (u = ulo; u <= uhi; u+= 0.0075){
+	  for(v = vlo; v <= vhi ; v += 0.0075) {
 	    
 	    //reinit temp_rgb
 	    temp_rgb[0] = rgb[0];
@@ -230,7 +230,8 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 int main(){
   //vars
-  int filenum = 0;
+  int filenum;
+  filenum = 0;
   int Tn, Ttypelist[100];
   double Tvlist[100];
   double mat[4][4], mat_inv[4][4];
@@ -240,11 +241,11 @@ int main(){
   init();
   D3d_make_identity(mat_inv);
   double sphere_rgb[3] = {.5, 0, .5};
-  double hyperbeloid_rgb[3] = {0, .5 , 0};
+  double hyperbeloid_rgb[3] = {1, 0 , 0};
 
 
   double u;
-  for(u = 0; u < 2 * M_PI; u+= M_PI/50){
+  for(u = 0; u < 2 * M_PI; u += M_PI/180){
     
     //Reinitialize some stuff
     map = create_new_xwd_map(width, height); //Needs a clear map for every frame
@@ -253,13 +254,17 @@ int main(){
     //VIEW matrix stuffs, we only move the view around
     //Set values for eye
     eye[0] = 10 * cos(u); //We use u as we're moving in a circle around the object
-    eye[1] = (3 * cos(4 * u)) + 8;
+    eye[1] = (3 * cos(4 * u)) + 4;
     eye[2] = 10 * sin(u);
 
     //Because we're changing eye we need to reinitialize up
     up[0] = eye[0];
     up[1] = eye[1] + 1;
     up[2] = eye[2];
+
+    center_of_interest[0] = 0;
+    center_of_interest[1] = 2;
+    center_of_interest[2] = 0;
     D3d_make_identity(view); //Remake view matrix every time because init only runs once
     D3d_view(view,view_inv,eye,center_of_interest,up);
 
@@ -328,20 +333,26 @@ int main(){
 
     ////END OF SPHERES
     ////BEGINNING OF HYPERBELOIDS
-    /**
+    
     //Hyperbeloid 1
     D3d_make_identity(mat);
     D3d_make_identity(mat_inv);
 
     Tn = 0;
-    Ttypelist[Tn] = SY;
-    Tvlist[Tn] = 0.5;
-    Tn++;
     Ttypelist[Tn] = SX;
     Tvlist[Tn] = 0.5;
     Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 0.5;
+    Tn++;
     Ttypelist[Tn] = SZ;
-    Tvlist[Tn] = 2;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 5.5;
+    Tn++;
+    Ttypelist[Tn] = RX;
+    Tvlist[Tn] = 90; 
     Tn++;
     Ttypelist[Tn] = TX;
     Tvlist[Tn] = -2;
@@ -350,44 +361,59 @@ int main(){
     D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
     fnum = 9;
     plot_3d(map, f9, mat, hyperbeloid_rgb);
-
+    
     //Hyperbeloid 2
     D3d_make_identity(mat);
     D3d_make_identity(mat_inv);
 
     Tn = 0;
-    Ttypelist[Tn] = SY;
-    Tvlist[Tn] = 0.5;
-    Tn++;
     Ttypelist[Tn] = SX;
     Tvlist[Tn] = 0.5;
     Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 0.5;
+    Tn++;
     Ttypelist[Tn] = SZ;
-    Tvlist[Tn] = 2;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 5.5;
+    Tn++;
+    Ttypelist[Tn] = RX;
+    Tvlist[Tn] = 90; 
     Tn++;
     Ttypelist[Tn] = RY;
-    Tvlist[Tn] = 60; 
+    Tvlist[Tn] = -60; 
     Tn++;
     Ttypelist[Tn] = TX;
     Tvlist[Tn] = 1; 
     Tn++;
     Ttypelist[Tn] = TZ; 
-    Tvlist[Tn] = (-2 * sqrt(3)) + sqrt(3);
+    Tvlist[Tn] = -((-2 * sqrt(3)) + sqrt(3));
     Tn++;
     D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
     fnum = 9;
     plot_3d(map, f9, mat, hyperbeloid_rgb);
-    **/
+    
     //Hyperbeloid 3
     D3d_make_identity(mat);
     D3d_make_identity(mat_inv);
-    double temp[3] = {1,0,0};
-
     Tn = 0;
-    
+    Ttypelist[Tn] = SX;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SZ;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 5.5;
+    Tn++;
+    Ttypelist[Tn] = RZ;
     Tvlist[Tn] = 90;
     Tn++;
-    
     Ttypelist[Tn] = RY;
     Tvlist[Tn] = -30;
     Tn++;
@@ -396,15 +422,65 @@ int main(){
     Tn++;
     Ttypelist[Tn] = TZ; 
     Tvlist[Tn] = (-2 * sqrt(3)) + sqrt(3);
+    Tn++; 
+    
+
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 9;
+    plot_3d(map, f9, mat, hyperbeloid_rgb);
+
+    //Hyperbeloid 4
+    D3d_make_identity(mat);
+    D3d_make_identity(mat_inv);
+    Tn = 0;
+    Ttypelist[Tn] = SX;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SZ;
+    Tvlist[Tn] = 0.5;
+    Tn++;
+    Ttypelist[Tn] = SY;
+    Tvlist[Tn] = 5.5;
+    Tn++;
+    Ttypelist[Tn] = RY; 
+    Tvlist[Tn] =   90; 
+    Tn++;
+    Ttypelist[Tn] = RZ; 
+    Tvlist[Tn] =   37.5; 
+    Tn++;
+    Ttypelist[Tn] = TX; 
+    Tvlist[Tn] =    2; 
+    Tn++;
+    Ttypelist[Tn] = TY; 
+    Tvlist[Tn] = 2*sqrt(2); 
     Tn++;
     D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
     fnum = 9;
-    plot_3d(map, f9, mat, temp);
+    plot_3d(map, f9, mat, hyperbeloid_rgb);
 
+    //Hyperbeloid 5
+    Ttypelist[Tn] = RY; 
+    Tvlist[Tn] =   120; 
+    Tn++;
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 9;
+    plot_3d(map, f9, mat, hyperbeloid_rgb);
+
+   
+    //Hyperbeloid 6
+    Ttypelist[Tn] = RY; 
+    Tvlist[Tn] =   120; 
+    Tn++;
+    D3d_make_movement_sequence_matrix(mat, mat_inv, Tn, Ttypelist, Tvlist);
+    fnum = 9;
+    plot_3d(map, f9, mat, hyperbeloid_rgb); 
 
     sprintf(filename,"%s%04d.xwd", file, filenum);
-    xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
     filenum ++;
+    xwd_map_to_named_xwd_file(map, filename);  printf("\nRendered frame #%d", filenum);
 
   }
   

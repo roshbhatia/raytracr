@@ -1,3 +1,5 @@
+CCFLAG += -MMD -MP -g3
+
 rootdir = $(shell pwd)
 
 srcdir = $(rootdir)/src
@@ -24,13 +26,13 @@ dep := $(obj:.o=.d)
 cleanfiles = $(main) $(paralell) $(obj) $(dep)
 
 $(srcdir)/%.o: $(srcdir)/%.c
-	gcc -MMD -MP -I $(includedir) -c $< -o $@
+	$(CC) $(CCFLAG) -I $(includedir) -c $< -o $@
 
 $(main): $(obj) $(mainsrc)
-	gcc -MMD -MP -I $(includedir) $^ -lm -o $@
+	$(CC) $(CCFLAG) -I $(includedir) $^ -lm -o $@
 
 $(_paralell): $(obj) $(paralellmainsrc) 
-	gcc -MMD -MP -I $(includedir) $^ -lm -o $@
+	$(CC) $(CCFLAG) -I $(includedir) $^ -lm -o $@
 
 all: $(main)
 
