@@ -44,6 +44,7 @@ int init_zbuffer(){
 }
 
 //Initializes arrays and sets view matrix
+ 
 int init(){
   //zbuffer
   init_zbuffer();
@@ -65,14 +66,16 @@ int init(){
 
   //Light source
   light_source[0] = eye[0];
-  light_source[1] = eye[1];
-  light_source[2] = eye[2] - 2;
+  light_source[1] = eye[1] - 5 ;
+  light_source[2] = eye[2] - 5;
 
   //View Matrix
   D3d_make_identity(view);
   D3d_make_identity(view_inv);
   D3d_view(view,view_inv,eye,center_of_interest,up);
 
+  //Run light source through view matrix in order to pull it into world space
+  D3d_mat_mult_pt(light_source,view,light_source);
   //Spec max
   spec_max =  1 - ambient - diffuse;
   return 1;
@@ -109,18 +112,29 @@ int shade(double *rgb, double ambientplusdiffuse, double intensity){
 
 int light_model(double *vector1, double *vector2, double *xyz, double *rgb){
   //Vector from position to light source
-  double lxyz [3] = {light_source[0] - xyz[0], light_source[1] - xyz[1], light_source[0] - xyz[2]};
+  double lxyz [3] = {light_source[0] - xyz[0], light_source[1] - xyz[1], light_source[3] - xyz[2]};
   D3d_normalize(lxyz);
 
   //Normal vector from two input vectors
   double normal_vector[3];
   D3d_x_product(normal_vector, vector1, vector2);
   D3d_normalize(normal_vector);
-
+  
   //Vector from postion
-  double exyz [3] = {eye[0] - xyz[0], eye[1] - xyz[1], eye[2] - xyz[2]};
+  double exyz [3] = {0 - xyz[0], 0 - xyz[1], 0 - xyz[2]};
   D3d_normalize(exyz);
 
+  double nl = D3d_dot_product(normal_vector,lxyz);
+  double ne = D3d_dot_product(normal_vector,eye);
+
+   if ((nl < 0) && (ne < 0)){
+    normal_vector[0] =  0 - normal_vector[0];
+    normal_vector[1] =  0 - normal_vector[1];
+    normal_vector[2] =  0 - normal_vector[2];
+ 
+    nl *= (- 1.0);
+    ne *= (- 1.0);
+   }
   //Reflection vector
   double u = 2 * D3d_dot_product(normal_vector,lxyz);
   double r[3] = {
@@ -130,14 +144,14 @@ int light_model(double *vector1, double *vector2, double *xyz, double *rgb){
   };
   D3d_normalize(r);
 
-
+  
   double er = D3d_dot_product(exyz,r);
-  double nl = D3d_dot_product(normal_vector,lxyz);
-  double ne = D3d_dot_product(normal_vector,eye);
+ 
 
   if ((nl*ne) <= 0){
-    er = 0;
-    nl = 0;
+    goto LLL ;
+    //er = 0;
+    //nl = 0;
   }
   if (er <= 0) {
     er = 0;
@@ -146,8 +160,10 @@ int light_model(double *vector1, double *vector2, double *xyz, double *rgb){
     nl = 0;
   }
 
+ LLL : ;
   double intensity = ambient + (diffuse * nl) + (spec_max * pow(er,specularity));
   //printf("\nIntensity: %lf", intensity);
+ 
   shade (rgb, ambient + diffuse , intensity);
   return 1;
 }
@@ -164,7 +180,7 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 	int CHECK_FLAG = 0;
 	int a = 0;
 	int b;
-	double CHECK_RGB [3] = {0.5,0.5,0.0};
+	double CHECK_RGB [3] = {1.0,1.0,1.0};
 
 
 	//Choosing which object to plot
@@ -179,76 +195,76 @@ int plot_3d (int map,int (*func)(double u1, double v1, double points[3]), double
 
 	double u, v;
 	//Maps every point to matrix w/ translations
-	for(v = vlo; v <= vhi ; v += 0.003) {
+	for(v = vlo; v <= vhi ; v += 0.01) {
 
-			if ((v - (a * M_PI/16.0)) > -1){
-				a = a + 1;
-				CHECK_FLAG = (CHECK_FLAG+1) % 2;
-			}
+	  if ((v - (a * M_PI/32.0)) > -1){
+	    a = a + 1;
+	    CHECK_FLAG = (CHECK_FLAG+1) % 2;
+	  }
 
-			b = 0;
+	  b = 0;
 
-			for (u = ulo; u <= uhi; u+= 0.003){
+	  for (u = ulo; u <= uhi; u+= 0.0015){
 
-							if (b * M_PI/16.0 < u){
-								b = b + 1;
-								CHECK_FLAG = (CHECK_FLAG+1) % 2;
-							}
+	    if (b * M_PI/32.0 < u){
+	      b = b + 1;
+	      CHECK_FLAG = (CHECK_FLAG+1) % 2;
+	    }
 
-						   //reinit temp_rgb
-						   temp_rgb[0] = rgb[0];
-						   temp_rgb[1] = rgb[1];
-						   temp_rgb[2] = rgb[2];
+	    //reinit temp_rgb
+	    temp_rgb[0] = rgb[0];
+	    temp_rgb[1] = rgb[1];
+	    temp_rgb[2] = rgb[2];
 
-						   //calls function, saves point into xyz, then makes necessary moves based on ident                  ity matrix and view matrix
-						   func(u,v,xyz);
-						   D3d_mat_mult_pt(xyz, mat, xyz);
-						   D3d_mat_mult_pt(xyz, view, xyz);
+	    //calls function, saves point into xyz, then makes necessary moves based on ident                  ity matrix and view matrix
+	    func(u,v,xyz);
+	    D3d_mat_mult_pt(xyz, mat, xyz);
+	    D3d_mat_mult_pt(xyz, view, xyz);
 
-						   //Vectors for light_model
-						   double t1[3], t2[3];
+	    //Vectors for light_model
+	    double t1[3], t2[3];
 
-						   func(u + 0.1,v,t1);
-						   D3d_mat_mult_pt(t1, mat, t1);
-						   D3d_mat_mult_pt(t1, view, t1);
-						   t1[0] = t1[0] - xyz[0];
-						   t1[1] = t1[1] - xyz[1];
-						   t1[2] = t1[2] - xyz[2];
+	    func(u + 0.1,v,t1);
+	    D3d_mat_mult_pt(t1, mat, t1);
+	    D3d_mat_mult_pt(t1, view, t1);
+	    t1[0] = t1[0] - xyz[0];
+	    t1[1] = t1[1] - xyz[1];
+	    t1[2] = t1[2] - xyz[2];
 
-						   func(u,v + 0.1,t2);
-						   D3d_mat_mult_pt(t2, mat, t2);
-						   D3d_mat_mult_pt(t2, view, t2);
-						   t2[0] = t2[0] - xyz[0];
-						   t2[1] = t2[1] - xyz[1];
-						   t2[2] = t2[2] - xyz[2];
+	    func(u,v + 0.1,t2);
+	    D3d_mat_mult_pt(t2, mat, t2);
+	    D3d_mat_mult_pt(t2, view, t2);
+	    t2[0] = t2[0] - xyz[0];
+	    t2[1] = t2[1] - xyz[1];
+	    t2[2] = t2[2] - xyz[2];
 
-						   //change rgb w/ light
-						   if (fnum == 8){
-								 if (CHECK_FLAG == 1){
-									 light_model(t2, t1, xyz, CHECK_RGB);
-								 }
-								 else {
-						        light_model(t2, t1, xyz, temp_rgb);
-							   }
-						   }
-					     else if (fnum == 9){
-						     light_model(t1, t2, xyz, temp_rgb);
+	    //change rgb w/ light
+	    if (fnum == 8){
+	      if (CHECK_FLAG == 1){
+		light_model(t2, t1, xyz, CHECK_RGB);
+	      }
+	      else {
+		light_model(t2, t1, xyz, temp_rgb);
+	      }
+	    }
+	    else if (fnum == 9){
+	      light_model(t1, t2, xyz, temp_rgb);
 
-							 }
+	    }
 
-					    //translates xyz to xy plane
-					    p[0] = (400/tan(half_angle)) * (xyz[0]/xyz[2]) + (width/2);
-					    p[1] = (400/tan(half_angle)) * (xyz[1]/xyz[2]) + (height/2);
+	    //translates xyz to xy plane
+	    p[0] = (400/tan(half_angle)) * (xyz[0]/xyz[2]) + (width/2);
+	    p[1] = (400/tan(half_angle)) * (xyz[1]/xyz[2]) + (height/2);
 
-					    //saves zvalue of xyz into zbuffer[translatedx][translatedy]
-					    if ((p[0] < width && p[0] > -1) && (p[1] < height && p[1] > -1)){
-					      if (xyz[2] < zbuffer[p[0]] [p[1]]){
-									zbuffer[p[0]] [p[1]] = xyz[2];
-				 				  set_xwd_map_color(map, p[0], p[1], temp_rgb[0], temp_rgb[1], temp_rgb[2]);
-						     }
-						   }
-						 }
-					}
+	    //saves zvalue of xyz into zbuffer[translatedx][translatedy]
+	    if ((p[0] < width && p[0] > -1) && (p[1] < height && p[1] > -1)){
+	      if (xyz[2] < zbuffer[p[0]] [p[1]]){
+		zbuffer[p[0]] [p[1]] = xyz[2];
+		set_xwd_map_color(map, p[0], p[1], temp_rgb[0], temp_rgb[1], temp_rgb[2]);
+	      }
+	    }
+	  }
+	}
 
 	return 1;
 }
