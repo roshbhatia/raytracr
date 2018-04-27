@@ -411,10 +411,14 @@ int D3d_x_product (double res[3], double a[3], double b[3])
 // D3d_x_product (a,  a,a) 
 {
     double r[3] ;
-    
+    /**
     r[0] = a[1]*b[2] - b[1]*a[2] ;
     r[1] = b[0]*a[2] - a[0]*b[2] ;
     r[2] = a[0]*b[1] - b[0]*a[1] ;
+**/
+    r[0] = a[1]*b[2] - a[2]*b[1];
+    r[1] = a[2]*b[0] - a[0]*b[2];
+    r[2] = a[0]*b[1] - a[1]*b[0];
 
     res[0] = r[0] ;
     res[1] = r[1] ;

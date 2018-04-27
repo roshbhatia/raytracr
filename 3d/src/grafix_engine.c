@@ -112,7 +112,7 @@ int shade(double *rgb, double ambientplusdiffuse, double intensity){
 
 int light_model(double *vector1, double *vector2, double *xyz, double *rgb){
   //Vector from position to light source
-  double lxyz [3] = {light_source[0] - xyz[0], light_source[1] - xyz[1], light_source[3] - xyz[2]};
+  double lxyz [3] = {light_source[0] - xyz[0], light_source[1] - xyz[1], light_source[2] - xyz[2]};
   D3d_normalize(lxyz);
 
   //Normal vector from two input vectors

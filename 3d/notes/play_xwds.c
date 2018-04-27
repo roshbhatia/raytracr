@@ -1,11 +1,9 @@
 #include <FPT.h>
 
 
-<<<<<<< HEAD
 int main (int argc, char **argv)
-=======
+
 int main ()
->>>>>>> ffe1886d11a2e9bb4cdd04d24adb8f719224baa1
 {
   int width,height ;
   char prefix[100], sequence_name[100] ;
@@ -15,7 +13,6 @@ int main ()
 
   printf("movie player ... q to quit, any other key to keep playing movie\n") ;
 
-<<<<<<< HEAD
   //printf("enter window width and height ") ;
   //scanf("%d %d",&width,&height) ;
   width = 800; height = 800;
@@ -36,7 +33,6 @@ int main ()
   //printf("enter ending integer ") ;
   //scanf("%d",&e) ;
   e = strtol(argv[3], what, 10);
-=======
   printf("enter window width and height ") ;
   scanf("%d %d",&width,&height) ;
 
@@ -48,7 +44,6 @@ int main ()
 
   printf("enter ending integer ") ;
   scanf("%d",&e) ;
->>>>>>> ffe1886d11a2e9bb4cdd04d24adb8f719224baa1
 
   /*
   printf("\n") ;
