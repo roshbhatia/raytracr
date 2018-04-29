@@ -200,10 +200,7 @@ void getXYZandObjnum(double origin[3], double screen_pt[3], double *x, double *y
     else if (obj_type[objnum] == 1){
       hyperboi(a, c, &A, &B, &C);
     }
-    else if (obj_type[objnum] == 2){
-      plane(a, c, &A, &B, &C);
-    }
-    
+
     n = quad(A,B,C,qres) ;
     for (i = 0 ; i < n ; i++) {
       t = qres[i] ;
@@ -270,16 +267,9 @@ int reflect(double origin [3], double screen_pt[3], double depth, double argb[3]
   // object space pt
   osp[0] = x ; osp[1] = y ; osp[2] = z ;
   // object space normal
-  if (obj_type[objmin] == 0){
-    osn[0] = 2*x ; osn[1] = 2*y ; osn[2] = 2*z ;
-  }
-  else if (obj_type[objmin] == 1){
-    osn[1] = - (2 * y); 
-  }
-  else if (obj_type[objmin] == 0){
-    osn[0] = 1;
-    osn[1] = 1;
-    osn[3] = 0;
+  osn[0] = 2*x ; osn[1] = 2*y ; osn[2] = 2*z ;
+  if (obj_type[objmin] == 1){
+    osn[1] = - (2 * y);
   }
   // eye space pt
   D3d_mat_mult_pt(esp, obmat[objmin], osp) ;
@@ -356,11 +346,10 @@ int reflect(double origin [3], double screen_pt[3], double depth, double argb[3]
 
 
     //Recursive Call
-    //    reflect(esp, new_point, depth - 1, argb);
+    //    reflect(esp, new_point, depth - 1, argb); 
+    return 1;
   }
 }
-
-
 
 int main()
 {
@@ -567,7 +556,7 @@ int main()
 
 
 
-	num = reflect(origin, screen_pt, 3, argb);
+	num = reflect(origin, screen_pt, 10, argb);
 	if (num == 0) { continue ; }
 	
 	G_rgb(argb[0], argb[1], argb[2]) ;

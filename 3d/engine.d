@@ -1,10 +1,11 @@
-engine.out: /home/student/ROSH/ENGINE/3d/src/grafix_engine.c \
- /home/student/ROSH/ENGINE/3d/src/D3d_matrix.h \
- /home/student/ROSH/ENGINE/3d/src/parametric_equations.h \
- /home/student/ROSH/ENGINE/3d/src/xwd_tools.h
+engine.out: \
+  /Users/rshnbhatia/Documents/School/SPRING_2016/ENGINE/3d/src/grafix_engine.c \
+  /Users/rshnbhatia/Documents/School/SPRING_2016/ENGINE/3d/src/D3d_matrix.h \
+  /Users/rshnbhatia/Documents/School/SPRING_2016/ENGINE/3d/src/parametric_equations.h \
+  /Users/rshnbhatia/Documents/School/SPRING_2016/ENGINE/3d/src/xwd_tools.h
 
-/home/student/ROSH/ENGINE/3d/src/D3d_matrix.h:
+/Users/rshnbhatia/Documents/School/SPRING_2016/ENGINE/3d/src/D3d_matrix.h:
 
-/home/student/ROSH/ENGINE/3d/src/parametric_equations.h:
+/Users/rshnbhatia/Documents/School/SPRING_2016/ENGINE/3d/src/parametric_equations.h:
 
-/home/student/ROSH/ENGINE/3d/src/xwd_tools.h:
+/Users/rshnbhatia/Documents/School/SPRING_2016/ENGINE/3d/src/xwd_tools.h:
