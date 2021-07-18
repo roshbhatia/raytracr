@@ -7,17 +7,15 @@ srcdir = $(rootdir)/src
 includedir = $(srcdir)
 
 src:= \
-	$(srcdir)/D3d_matrix.c \
+	$(srcdir)/d3d_matrix.c \
 	$(srcdir)/parametric_equations.c \
 	$(srcdir)/xwd_tools.c \
 
 main := engine.out
 
-mainsrc := $(srcdir)/grafix_engine.c
+mainsrc := $(srcdir)/main.c
 
-parallel:= singleframe.out
-
-paralellmainsrc := $(srcdir)/grafix_engine_paralell.c
+playxwdssrc := $(srcdir)/play_xwds.c
 
 obj := $(src:.c=.o)
 
@@ -31,12 +29,12 @@ $(srcdir)/%.o: $(srcdir)/%.c
 $(main): $(obj) $(mainsrc)
 	$(CC) $(CCFLAG) -I $(includedir) $^ -lm -o $@
 
-$(_paralell): $(obj) $(paralellmainsrc) 
+$(_play_xwds): $(obj) $(play_xwds) 
 	$(CC) $(CCFLAG) -I $(includedir) $^ -lm -o $@
 
 all: $(main)
 
-paralell: $(_paralell)
+play_xwds: $(_play_xwds)
 
 clear:
 	rm $(rootdir)/output/*.xwd

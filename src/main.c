@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <D3d_matrix.h>
+#include <d3d_matrix.h>
 #include <parametric_equations.h>
 #include <xwd_tools.h>
 

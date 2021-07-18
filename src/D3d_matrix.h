@@ -1,6 +1,6 @@
 
-#ifndef D3d_matrix_stuff
-#define D3d_matrix_stuff
+#ifndef d3d_matrix_stuff
+#define d3d_matrix_stuff
 
 #include <stdio.h>
 #include <math.h>

@@ -1,3 +1,5 @@
 *.xwd
 *.out
 play
+src/*.o
+src/*.d
