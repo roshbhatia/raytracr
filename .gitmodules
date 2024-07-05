@@ -1,0 +1,3 @@
+[submodule "fpt"]
+	path = fpt
+	url = https://github.com/lc-acm/fpt.git
