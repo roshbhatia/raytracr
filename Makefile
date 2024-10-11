@@ -1,4 +1,4 @@
-CCFLAG += -MMD -MP -g3
+CCFLAG += -MMD -MP -g3 $(shell sdl2-config --cflags)
 
 rootdir = $(shell pwd)
 
@@ -7,7 +7,7 @@ srcdir = $(rootdir)/src
 includedir = $(srcdir)
 
 src:= \
-	$(srcdir)/d3d_matrix.c \
+	$(srcdir)/D3d_matrix.c \
 	$(srcdir)/parametric_equations.c \
 	$(srcdir)/xwd_tools.c \
 
@@ -27,9 +27,9 @@ $(srcdir)/%.o: $(srcdir)/%.c
 	$(CC) $(CCFLAG) -I $(includedir) -c $< -o $@
 
 $(main): $(obj) $(mainsrc)
-	$(CC) $(CCFLAG) -I $(includedir) $^ -lm -o $@
+	$(CC) $(CCFLAG) -I $(includedir) $^ -lm $(shell sdl2-config --libs) -o $@
 
-$(_play_xwds): $(obj) $(play_xwds) 
+$(_play_xwds): $(obj) $(playxwds) 
 	$(CC) $(CCFLAG) -I $(includedir) $^ -lm -o $@
 
 all: $(main)
