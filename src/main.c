@@ -1,9 +1,9 @@
-#include <SDL2/SDL.h>
-#include <d3d_matrix.h>
-#include <math.h>
-#include <parametric_equations.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "SDL2/SDL.h"
+#include "d3d_matrix.h"
+#include "math.h"
+#include "parametric_equations.h"
+#include "stdio.h"
+#include "stdlib.h"
 
 // General window vars
 #define WIDTH 800

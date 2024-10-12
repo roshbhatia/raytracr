@@ -1,9 +1,9 @@
 #ifndef d3d_matrix_stuff
 #define d3d_matrix_stuff
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "math.h"
+#include "stdio.h"
+#include "stdlib.h"
 
 /*
 

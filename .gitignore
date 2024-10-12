@@ -64,3 +64,5 @@ output/*.bmp
 
 # Other ignores
 *.d
+.DS_Store
+output/video.mp4
