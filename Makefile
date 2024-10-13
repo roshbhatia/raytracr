@@ -7,7 +7,7 @@ srcdir = $(rootdir)/src
 includedir = $(srcdir)
 
 src:= \
-	$(srcdir)/D3d_matrix.c \
+	$(srcdir)/d3d_matrix.c \
 	$(srcdir)/parametric_equations.c \
 
 main := engine.out
